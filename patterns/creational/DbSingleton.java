@@ -25,11 +25,11 @@ public class DbSingleton {
 			//Another validation in synchronized method to avoid race condition
 			//It seems a hevy validation, but only will run once, on instance creation, NOT every time getInstance() is invoked
 				if(instance == null){
-					instance == new DbSingleton();
+					instance = new DbSingleton();
 				}
 			}
 		}
-		return instance
+		return instance;
 	}
 
 }

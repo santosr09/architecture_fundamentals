@@ -1,0 +1,9 @@
+public class SingletonDemo {
+    
+    public static void main(String[] args){
+
+        DbSingleton dbInstance = DbSingleton.getInstance();
+        dbInstance.toString();
+        
+    }
+}

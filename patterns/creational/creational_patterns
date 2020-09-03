@@ -1,3 +1,176 @@
 Patterns Design
 
 CREATIONAL:
+-SINGLETON
+-BUILDER
+-PROTOTYPE
+-FACTORY
+-ABSTRACTFACTORY
+
+_SINGLETON
+_Only one instance created
+_Guarantees control of a resource
+_Lazy loaded -> Provide performance improvement
+
+_When the application starts, if lazy load is implemented, will load only the required compomenents, and will require the remains as they will be needed
+
+public class DbSingleton {
+	
+	//This is Eager loading- It consumes innecessary resources
+	//private static volatile DbSingleton instance = new DbSingleton();
+
+    //Implementing Lazy loading
+    //volatile: Makes the instance ThreadSafe
+	private static volatile DbSingleton instance = null;
+
+	private DbSingleton(){
+		//Avoid Reflection
+		if(instance != null){
+			throw new RuntimeException("Use getInstance() method to create");
+		}
+	}
+
+	
+	//If we synchronize the complete method will sllow the class, every time we invoke the getInstance() method, instead we synchronize only the part regarding to new intance creation
+
+	public static DbSingleton getInstance(){
+		//Lazy Loading, load the resource only when is required
+		if(instance == null){
+
+			synchronized(DbSingleton.class){
+			//Another validation in synchronized method to avoid race condition
+			//It seems a hevy validation, but only will run once, on instance creation, NOT every time getInstance() is invoked
+				if(instance == null){
+					instance == new DbSingleton();
+				}
+			}
+		}
+		return instance
+	}
+
+}
+
+
+_PITFALLS:
+-Overused - It slow down the application
+-Difficult to unit test
+-If not careful, not thread-safe
+-Sometimes confused for Factory: If the method creation require a parameter then is not a singleton is a factory.
+
+_CONTRAST:
+_SINGLETON:
+-Returns same instance
+   -One constructor method - no args
+-No Interface
+
+_FACTORY:
+-Returns various instances (differents types)
+   -Multiple constructors
+-Interface driven
+-Adaptable to environment more easily
+
+=============================================================================================
+=============================================================================================
+
+_BUILDER
+
+_Handles complex constructors
+_Large number of parameters
+_Inmutability
+_Examples: StringBuilder, DocumentBuilder, Locale.Builder
+
+_Flexibility over telecosping constructor: Multiple constructor with different parameters, Avoid: which constructor should I use?
+_Static inner class: Work using an object instead constructors
+_Calls appropiate constructor
+_Negates the need for exposed setters- This favor immutablity
+
+_Creative way to deal with complexity
+
+public class LunchOrder {
+	
+	public static class Builder {
+
+		private String bread;
+		private String condiments;
+		private String dressing;
+		private String meat;
+
+		public Builder(){
+
+		}
+
+		public LunchOrder build(){
+			return new LunchOrder(this);
+		}
+
+		public Builder bread(String bread){
+			this.bread = bread;
+			return this;
+		}
+
+		public Builder condiments(String condiments){
+			this.condiments = condiments;
+			return this;
+		}
+
+		public Builder dressing(String dressing){
+			this.dressing = dressing;
+			return this;
+		}
+
+		public Builder meat(String meat){
+			this.meat = meat;
+			return this;
+		}
+
+	}//Inner Class Builder
+
+	private final String bread;
+	private final String condiments;
+	private final String dressing;
+	private final String meat;
+
+	private LunchOrder(Builder builder){
+		this.bread = builder.bread;
+		this.condiments = builder.condiments;
+		this.dressing = builder.dressing;
+		this.meat = builder.meat;
+	}
+
+	//GETTERS
+
+}
+
+
+public class BuilderLunchOrderDemo {
+	
+	public static void main(String args[]) {
+
+		LunchOrder.Builder builder = new LunchOrder.Builder(); //Get an instance of the inner class
+
+		builder.bread("Wheat").condiments("lettuce").dressing("Mayo").meat("Turkey");
+
+		LunchOrder lunchOrder = builder.build();
+
+	}
+}
+
+_PITFALLS:
+-Objects create are typically designed to be immutable
+
+_CONTRAST:
+_BUILDER
+-Handles complex constructors
+-No interface required
+-Can be a separate class(Inner class)
+-Works with legacy code
+
+_PROTOTYPE:
+-Implemented around a clone
+-Avoids calling complex constructors
+-Difficult to implement in legacy code
+
+
+=============================================================================================
+=============================================================================================
+

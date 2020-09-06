@@ -1,3 +1,5 @@
+package singleton;
+
 public class DbSingleton {
 	
 	//This is Eager loading- It consumes innecessary resources

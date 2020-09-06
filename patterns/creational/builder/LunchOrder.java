@@ -1,3 +1,5 @@
+package builder;
+
 public class LunchOrder {
     
     //We use an object as the builder, instead constructors

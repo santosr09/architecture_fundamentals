@@ -241,5 +241,23 @@ _Creation in subclass
 =============================================================================================
 =============================================================================================
 
+_ABSTRACT FACTORY PATTERN
+_CONCEPTS
+-Factory of Factories
+-Factory of related objects
+-Common Interface
+-Defer to subclasses
+-Examples:
+ -DocumentBuilder
+ -Frameworks
+
+_DESIGN
+-Groups Factories together
+-Factory is responsible for lifecycle
+-Common Interface
+-Concrete Classes
+-Parameterized create method
+-Composition
+
 
 

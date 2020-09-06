@@ -259,5 +259,7 @@ _DESIGN
 -Parameterized create method
 -Composition
 
-
+-It's a group of similar factories
+-Heavy abstraction
+-Framework pattern
 
